@@ -261,6 +261,33 @@ public class HConnectionManager {
 
           monitor.incCounter(Counter.RECOVERABLE_TRANSPORT_EXCEPTIONS);
 
+        } else if (he instanceof HSocketTimedOutException ) {
+            //Node could be down or valid timeout. The only way we are able to detect if
+            //a node is down, is to try opening a new connection to that node and if open
+            //fails, then node is down. Not perfect, but it works. 
+
+            client.close();
+            final HClient tmpClient = clientFactory.createClient(host);
+            boolean tmpOpen = false;
+            try {
+                tmpClient.open();
+                tmpOpen = true;
+            } catch (HectorTransportException hte) {
+                markHostAsDown(pool.getCassandraHost());
+                excludeHosts.add(pool.getCassandraHost());
+                retryable = op.failoverPolicy.shouldRetryFor(HectorTransportException.class);
+                monitor.incCounter(Counter.RECOVERABLE_TRANSPORT_EXCEPTIONS);
+            } finally {
+                if (tmpOpen) {
+                    tmpClient.close();
+
+                    //Regular thrift timeout.
+                    doTimeoutCheck(pool.getCassandraHost());
+                    retryable = op.failoverPolicy.shouldRetryFor(HTimedOutException.class);
+                    monitor.incCounter(Counter.RECOVERABLE_TIMED_OUT_EXCEPTIONS);
+                }
+            }
+            
         } else if (he instanceof HTimedOutException ) {
           // DO NOT drecrement retries, we will be keep retrying on timeouts until it comes back
           // if HLT.checkTimeout(cassandraHost): suspendHost(cassandraHost);

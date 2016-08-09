@@ -7,6 +7,7 @@ import me.prettyprint.hector.api.exceptions.HCassandraInternalException;
 import me.prettyprint.hector.api.exceptions.HInvalidRequestException;
 import me.prettyprint.hector.api.exceptions.HNotFoundException;
 import me.prettyprint.hector.api.exceptions.HPoolExhaustedException;
+import me.prettyprint.hector.api.exceptions.HSocketTimedOutException;
 import me.prettyprint.hector.api.exceptions.HTimedOutException;
 import me.prettyprint.hector.api.exceptions.HUnavailableException;
 import me.prettyprint.hector.api.exceptions.HectorException;
@@ -38,7 +39,11 @@ public final class ExceptionsTranslatorImpl implements ExceptionsTranslator {
     	// TODO this may be an issue on the Cassandra side which warrants investigation.
     	// I seem to remember these coming back as TimedOutException previously
     	if (original.getCause() instanceof SocketTimeoutException) {
-    		he = new HTimedOutException(original);
+                //Downed node also throws a SocketTimeoutException and is not
+                //bubbled up to HConnectionManager, which keeps the node around
+                //till maxactive has been exhausted. 
+
+    		he = new HSocketTimedOutException(original);
     	} else {
     		he = new HectorTransportException(original);
     	}
