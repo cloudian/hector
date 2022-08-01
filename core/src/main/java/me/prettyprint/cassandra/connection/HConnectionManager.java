@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import me.prettyprint.cassandra.connection.client.HClient;
+import me.prettyprint.cassandra.connection.client.HThriftClient;
 import me.prettyprint.cassandra.connection.factory.HClientFactory;
 import me.prettyprint.cassandra.connection.factory.HClientFactoryProvider;
 import me.prettyprint.cassandra.service.*;
@@ -437,6 +438,9 @@ public class HConnectionManager {
       pool = suspendedHostPools.get(client.getCassandraHost());
     }
     if ( pool != null ) {
+      if (client instanceof HThriftClient) {
+        ((HThriftClient) client).clearBuffers();
+      }
       pool.releaseClient(client);
     } else {
       log.info("Client {} released to inactive or dead pool. Closing.", client);

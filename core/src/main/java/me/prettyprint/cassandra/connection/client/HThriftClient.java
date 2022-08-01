@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
  * <p>
 */
 public class HThriftClient implements HClient {
+  private static final long MAX_BUFFER_SIZE = 1024 * 1024;
   private long createdTime = System.currentTimeMillis();
 
   private static Logger log = LoggerFactory.getLogger(HThriftClient.class);
@@ -54,6 +55,7 @@ public class HThriftClient implements HClient {
   protected String keyspaceName;
   private long useageStartTime;
 
+  protected TSocket socket;
   protected TTransport transport;
   protected Cassandra.Client cassandraClient;
   private TSSLTransportParameters params;
@@ -152,7 +154,6 @@ public class HThriftClient implements HClient {
       log.debug("Creating a new thrift connection to {}", cassandraHost);
     }
 
-    TSocket socket;    
     try {
         socket = params == null ? 
                                 new TSocket(cassandraHost.getHost(), cassandraHost.getPort(), timeout)
@@ -317,5 +318,16 @@ public class HThriftClient implements HClient {
   @Override
   public void updateLastSuccessTime() {
     lastSuccessTime = System.currentTimeMillis();
+  }
+
+  /**
+   * Avoids large read & write buffer of client. Be sure reset to less size of buffer.
+   * Please refer to cloudian jira issue: HS-54754
+   */
+  public void clearBuffers() {
+    byte[] buffer = transport.getBuffer();
+    if (buffer != null && buffer.length > MAX_BUFFER_SIZE) {
+      transport = maybeWrapWithTFramedTransport(socket);
+    }
   }
 }
