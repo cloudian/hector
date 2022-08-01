@@ -3,12 +3,12 @@
   <parent>
     <groupId>org.hectorclient</groupId>
     <artifactId>hector</artifactId>
-		<version>2.0-1-SNAPSHOT</version>
+    <version>2.0-1</version>
   </parent>
   <artifactId>hector-test</artifactId>
   <packaging>jar</packaging>
   <name>test</name>
-  
+
   <properties>
     <!-- OSGi bundle properties -->
     <bundle.symbolicName>org.hectorclient.hector-test</bundle.symbolicName>
@@ -101,7 +101,7 @@
       <groupId>com.github.stephenc</groupId>
       <artifactId>jamm</artifactId>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
     <!-- OSGi deps -->
     <dependency>
       <groupId>org.osgi</groupId>

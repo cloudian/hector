@@ -10,7 +10,7 @@
   <groupId>org.hectorclient</groupId>
   <artifactId>hector</artifactId>
   <packaging>pom</packaging>
-  <version>2.0-1-SNAPSHOT</version>
+  <version>2.0-1</version>
   <name>hector</name>
   <description>Cassandra Java Client Library</description>
   <url>http://github.com/hector-client/hector</url>
@@ -153,8 +153,8 @@
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>1.2.16</version>
-      </dependency>    
-      <!-- END OF Logging Dependencies -->  
+      </dependency>
+      <!-- END OF Logging Dependencies -->
       <!-- Common test dependencies -->
       <dependency>
         <groupId>junit</groupId>
@@ -199,7 +199,7 @@
         <artifactId>jamm</artifactId>
         <version>0.2.5</version>
         <scope>test</scope>
-      </dependency>   
+      </dependency>
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
@@ -266,8 +266,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>2.3</version>
           <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
+            <source>1.8</source>
+            <target>1.8</target>
             <optimize>true</optimize>
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
@@ -366,7 +366,7 @@
           </links>
           <linksource>true</linksource>
           <maxmemory>900m</maxmemory>
-          <source>1.6</source>
+          <source>1.8</source>
         </configuration>
       </plugin>
       <plugin>
@@ -387,7 +387,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
+
     <!-- Dependency versioning-->
     <cassandra.version>2.0.4</cassandra.version>
     <org.springframework.version>3.0.6.RELEASE</org.springframework.version>
