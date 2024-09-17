@@ -17,6 +17,7 @@ import org.apache.cassandra.thrift.InvalidRequestException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TSocket;
@@ -322,12 +323,11 @@ public class HThriftClient implements HClient {
 
   /**
    * Avoids large read & write buffer of client. Be sure reset to less size of buffer.
-   * Please refer to cloudian jira issue: HS-54754
+   * Please refer to cloudian jira issue: HS-54754 & HS-60558
    */
-  public void clearBuffers() {
+  public boolean shouldResetBuffer() {
     byte[] buffer = transport.getBuffer();
-    if (buffer != null && buffer.length > MAX_BUFFER_SIZE) {
-      transport = maybeWrapWithTFramedTransport(socket);
-    }
+    return buffer != null && buffer.length > MAX_BUFFER_SIZE;
   }
+
 }
