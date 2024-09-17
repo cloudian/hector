@@ -322,12 +322,11 @@ public class HThriftClient implements HClient {
 
   /**
    * Avoids large read & write buffer of client. Be sure reset to less size of buffer.
-   * Please refer to cloudian jira issue: HS-54754
+   * Please refer to cloudian jira issue: HS-54754 & HS-60558
    */
-  public void clearBuffers() {
+  public boolean shouldResetBuffer() {
     byte[] buffer = transport.getBuffer();
-    if (buffer != null && buffer.length > MAX_BUFFER_SIZE) {
-      transport = maybeWrapWithTFramedTransport(socket);
-    }
+    return buffer != null && buffer.length > MAX_BUFFER_SIZE;
   }
+
 }

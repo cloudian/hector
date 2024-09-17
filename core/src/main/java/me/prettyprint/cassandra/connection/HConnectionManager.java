@@ -437,10 +437,7 @@ public class HConnectionManager {
     if ( pool == null ) {
       pool = suspendedHostPools.get(client.getCassandraHost());
     }
-    if ( pool != null ) {
-      if (client instanceof HThriftClient) {
-        ((HThriftClient) client).clearBuffers();
-      }
+    if ( pool != null && !shouldResetBuffer(client) ) {
       pool.releaseClient(client);
     } else {
       log.info("Client {} released to inactive or dead pool. Closing.", client);
@@ -509,4 +506,10 @@ public class HConnectionManager {
     cassandraHostRetryService.applyRetryDelay();
   }
 
+  private boolean shouldResetBuffer(HClient client) {
+    if (client instanceof HThriftClient) {
+      return ((HThriftClient) client).shouldResetBuffer();
+    }
+    return false;
+  }
 }
