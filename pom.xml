@@ -150,16 +150,16 @@
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.16</version>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.24.3</version>
       </dependency>
       <!-- END OF Logging Dependencies -->
       <!-- Common test dependencies -->
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.8.1</version>
+        <version>4.13.2</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -203,7 +203,7 @@
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.2</version>
         <scope>test</scope>
       </dependency>
       <!-- END OF common test dependencies -->
@@ -391,7 +391,7 @@
     <!-- Dependency versioning-->
     <cassandra.version>2.0.4</cassandra.version>
     <org.springframework.version>3.0.6.RELEASE</org.springframework.version>
-    <slf4j.version>1.6.1</slf4j.version>
+    <slf4j.version>2.0.17</slf4j.version>
     <!-- Maven plugin versioning -->
     <maven.source.plugin.version>2.2.1</maven.source.plugin.version>
   </properties>
